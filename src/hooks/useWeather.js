@@ -1,43 +1,84 @@
-import { useEffect, useState } from "react";
-import { useFetch } from "./useFetch.js";
-import { getForecast, getWeatherByLocation } from '../services/weatherApi.js';
+import { useState } from "react";
+import { getCurrentWeather, getForecast, getWeatherByLocation } from '../services/weatherApi.js';
   
 /**
  * @param {string} url - адрес запроса
  * @param {object} [options] - дополнительные настройки fetch 
  * @returns {{ data: any, error: string | null, loading: boolean, refetch: Function }}
  */
-export function useWeather(cityName) {
-	const { data, error, loading } = useFetch(cityName);
+export function useWeather() {
 
 	const [weather, setWeather] = useState(null);
 	const [forecast, setForecast] = useState([]);
+	const [loading, setLoading] = useState(false);
+	const [error, setError] = useState('');
 	// const [error, setError] = useState(null);
 	// const [loading, setLoading] = useState(false);
 
 
-	const searchWeather = async () => {
-		
-		setWeather(data);
-		
-		const forecastData = await getForecast(cityName);
-		setForecast(forecastData);
+	const searchWeather = async (cityName) => {
+
+		if (!cityName) return;
+
+		setLoading(true);
+		setError('');
+
+		try {
+
+			const weatherData = await getCurrentWeather(cityName);
+
+			setWeather(weatherData);
+
+			const forecastData = await getForecast(cityName);
+
+			setForecast(forecastData);
+
+		} catch (err) {
+
+			setError(err.message);
+			setWeather(null);
+			setForecast([]);
+
+		} finally {
+
+			setLoading(false);
+
+		}
 				
-		};
+	};
 
 	const getMyLocationWeather = async () => {
 
-		const weatherData = await getWeatherByLocation();
-		setWeather(weatherData);
+		setLoading(true);
+		setError('');
 
-		const forecastData = await getForecast(weatherData.city);
-		setForecast(forecastData);
+		try {
+
+			const weatherData = await getWeatherByLocation();
+
+			setWeather(weatherData);
+
+			const forecastData = await getForecast(weatherData.city);
+
+			setForecast(forecastData);
+
+		} catch (err) {
+
+			setError(err.message);
+
+		} finally {
+
+			setLoading(false);
+
+		}
 	};
 
-  useEffect(() => {
-    searchWeather();
-    getMyLocationWeather();
-  }, [cityName]);
+//   useEffect(() => {
+
+//      if(cityName) {
+//       searchWeather();
+//     }
+//   }, [data]);
 
   return { weather, forecast,  error, loading, searchWeather, getMyLocationWeather };
 }

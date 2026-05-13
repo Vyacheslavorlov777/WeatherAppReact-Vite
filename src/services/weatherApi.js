@@ -24,7 +24,7 @@ export async function getCurrentWeather(cityName) {
 
     const data = await response.json();
     
-    // Преобразуем данные API в удобный формат
+    // Преобразование данных API в удобный формат
     return {
       city: data.name,
       country: data.sys.country,

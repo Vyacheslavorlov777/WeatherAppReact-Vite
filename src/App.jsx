@@ -7,54 +7,8 @@ import citys from './assets/citys';
 
 function App() {
   const [city, setCity] = useState('');
-  const {weather, forecast, loading, error, searchWeather, getMyLocationWeather } = useWeather(city);
+  const {weather, forecast, loading, error, searchWeather, getMyLocationWeather } = useWeather();
   
-
-  // const [searchCounter, setSearchCounter] = useState(0);
-  // const [weather, setWeather] = useState(null);
-  // const [forecast, setForecast] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const [error, setError] = useState('');
-
-  // const searchWeather = async (cityName) => {
-  //   setLoading(true);
-  //   setError('');
-    
-  //   try {
-  //     const weatherData = await getCurrentWeather(cityName);
-  //     setWeather(weatherData);
-      
-  //     const forecastData = await getForecast(cityName);
-  //     setForecast(forecastData);
-
-  //     searchCliker();
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const searchCliker = () => {
-  //   setSearchCounter(searchCounter + 1);
-  // }
-
-  // const getMyLocationWeather = async () => {
-  //   setLoading(true);
-  //   setError('');
-    
-  //   try {
-  //     const weatherData = await getWeatherByLocation();
-  //     setWeather(weatherData);
-      
-  //     const forecastData = await getForecast(weatherData.city);
-  //     setForecast(forecastData);
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
   const createtedBtnCity = (citys) => {
     return citys.map((city) => {
