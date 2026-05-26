@@ -1,189 +1,412 @@
 # Weather App
 
-## Preview
+A modern fullstack weather application built with React, Vite, Express, Prisma, and SQLite.
 
-![Weather App Screenshot](./public/preview.png)
+A modern fullstack weather application built with React, Vite, Express, Prisma, and SQLite.
 
-A modern weather application built with React and Vite.
-
-The app allows users to search for weather by city name, get weather using geolocation, and view a weekly forecast.
+The application allows users to search weather by city name, get weather using geolocation, view a weekly forecast, and store search history in a database.
 
 ---
 
-## Features
+# Preview
+
+Place your preview image in:
+
+```bash
+public/preview.png
+```
+
+Then it will be displayed automatically in README:
+
+![Weather App Preview](./public/preview.png)
+
+---
+
+# Features
 
 * Search weather by city name
 * Get weather using geolocation
 * Weekly weather forecast
-* Loading state handling
+* Search history
+* Clear search history
+* SQLite database integration
+* REST API backend
 * Error handling
-* Environment variables support (`.env`)
+* Loading states
+* Environment variables support
 * Responsive UI
+* CSS Modules
 * Custom React hooks
-* CSS Modules styling
 
 ---
 
-## Tech Stack
+# Tech Stack
+
+## Frontend
 
 * React
-
 * Vite
-
 * CSS Modules
-
-* OpenWeather API
-
 * Custom Hooks
 
-* JavaScript (ES6+)
+## Backend
 
-* React 19
+* Node.js
+* Express.js
+* Prisma ORM
+* SQLite
 
-* Vite
-
-* CSS Modules
+## API
 
 * OpenWeather API
-
-* Custom Hooks
-
-* JavaScript (ES6+)
 
 ---
 
-## Project Structure
+# Project Structure
 
 ```bash
-src
-├── assets
+src/
+├── assets/
 │   └── citys.js
-├── components
+├── components/
+│   ├── History.jsx
 │   └── Temperature.jsx
-├── hooks
+├── hooks/
 │   ├── useFetch.js
 │   └── useWeather.js
-├── services
+├── services/
 │   └── weatherApi.js
-├── styles
+├── styles/
 │   ├── App.css
 │   ├── App.module.css
-│   ├── index.css
-│   └── Temperature.module.css
+│   ├── History.module.css
+│   ├── Temperature.module.css
+│   └── index.css
 ├── App.jsx
 └── main.jsx
+
+server/
+├── prisma/
+│   ├── migrations/
+│   └── schema.prisma
+├── index.js
+├── .env
+└── package.json
 ```
 
 ---
 
-## Installation
+# Installation
 
-Clone the repository:
+## 1. Clone repository
 
 ```bash
 git clone <your-repository-url>
-```
-
-Go to the project folder:
-
-```bash
 cd weather-app
 ```
 
-Install dependencies:
+---
+
+# Frontend Setup
+
+## Install dependencies
 
 ```bash
 npm install
 ```
 
----
-
-## Environment Variables
-
-Create a `.env` file in the root directory:
-
-```env
-VITE_API_KEY=your_openweather_api_key
-```
-
-You can get an API key from:
-
-[https://openweathermap.org/api](https://openweathermap.org/api)
-
----
-
-## Running the Project
-
-Start development server:
+## Start frontend
 
 ```bash
 npm run dev
 ```
 
-Build for production:
+Frontend will run on:
 
 ```bash
-npm run build
-```
-
-Preview production build:
-
-```bash
-npm run preview
+http://localhost:5173
 ```
 
 ---
 
-## API
+# Backend Setup
 
-The application uses the OpenWeather API for:
+## Open server directory
 
-* Current weather
-* Weekly forecast
-* Geolocation weather
+```bash
+cd server
+```
+
+## Install dependencies
+
+```bash
+npm install
+```
+
+## Install Prisma
+
+```bash
+npm install prisma@5 @prisma/client@5
+```
 
 ---
 
-## Main Logic
+# Environment Variables
 
-### `useWeather`
+## Frontend `.env`
 
-Custom hook responsible for:
+Create `.env` in the project root:
 
-* weather requests
-* forecast requests
-* loading state
+```env
+VITE_API_KEY=your_openweather_api_key
+```
+
+---
+
+## Backend `.env`
+
+Create `.env` inside `server/`:
+
+```env
+DATABASE_URL="file:./dev.db"
+```
+
+---
+
+# Prisma Setup
+
+## Initialize Prisma
+
+```bash
+npx prisma init
+```
+
+## Run migrations
+
+```bash
+npx prisma migrate dev --name init
+```
+
+## Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+---
+
+# Run Backend
+
+```bash
+node index.js
+```
+
+Backend runs on:
+
+```bash
+http://localhost:3001
+```
+
+---
+
+# API Endpoints
+
+## Get Search History
+
+```http
+GET /history
+```
+
+---
+
+## Save Search History
+
+```http
+POST /history
+```
+
+Request body:
+
+```json
+{
+  "city": "Moscow"
+}
+```
+
+---
+
+## Clear Search History
+
+```http
+DELETE /history
+```
+
+---
+
+# Database Schema
+
+```prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model SearchHistory {
+  id        Int      @id @default(autoincrement())
+  city      String
+  createdAt DateTime @default(now())
+}
+```
+
+---
+
+# Application Architecture
+
+```text
+React Frontend
+       ↓
+Custom Hooks
+       ↓
+Weather API Service
+       ↓
+Express Backend
+       ↓
+Prisma ORM
+       ↓
+SQLite Database
+```
+
+---
+
+# Main Components
+
+## App.jsx
+
+Main application component.
+
+Responsibilities:
+
+* UI rendering
+* Search handling
+* State management
+* Weather display
+* Forecast display
+
+---
+
+## useWeather.js
+
+Custom hook for:
+
+* weather fetching
+* loading states
 * error handling
-* geolocation requests
-
-### `weatherApi.js`
-
-Contains all API request logic.
+* forecast fetching
+* geolocation weather
+* backend integration
 
 ---
 
-## Error Handling
+## History.jsx
+
+Displays search history.
+
+Features:
+
+* fetch history
+* render history list
+* clear history
+* auto refresh after search
+
+---
+
+## weatherApi.js
+
+Handles OpenWeather API requests.
+
+---
+
+# Search History Flow
+
+```text
+User Search
+    ↓
+searchWeather()
+    ↓
+OpenWeather API
+    ↓
+Weather Data
+    ↓
+POST /history
+    ↓
+Express Backend
+    ↓
+Prisma ORM
+    ↓
+SQLite Database
+    ↓
+History Component Update
+```
+
+---
+
+# Error Handling
 
 The application handles:
 
 * invalid city names
+* API errors
 * network errors
-* empty input values
-* API request failures
+* geolocation permission errors
+* backend request errors
 
 ---
 
-## Future Improvements
+# Loading States
 
-* Add weather icons animations
-* Add dark/light theme
-* Add hourly forecast
-* Add favorite cities
-* Add temperature unit switch (°C / °F)
-* Add search history
+The app uses loading states for:
+
+* weather requests
+* forecast requests
+* history loading
+* geolocation requests
 
 ---
 
-## Author
+# Future Improvements
+
+* Authentication
+* Favorite cities
+* PostgreSQL support
+* Weather charts
+* Docker support
+* Deployment
+* Unit tests
+* React Query integration
+
+---
+
+# Learning Goals
+
+This project demonstrates:
+
+* React fundamentals
+* Custom hooks
+* API integration
+* Fullstack architecture
+* REST API development
+* Database integration
+* Prisma ORM usage
+* State management
+* Error handling
+* Async JavaScript
+
+---
+
+# Author
 
 Developed as a React practice project  by Vyacheslav R.
