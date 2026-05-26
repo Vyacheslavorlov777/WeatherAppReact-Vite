@@ -4,9 +4,11 @@ import { useWeather } from './hooks/useWeather.js';
 // import { getCurrentWeather, getForecast, getWeatherByLocation } from './services/weatherApi';
 import styles from './styles/App.module.css';
 import citys from './assets/citys';
+import History from './components/History.jsx';
 
 function App() {
   const [city, setCity] = useState('');
+  const [historyUpdate, setHistoryUpdate] = useState(0);
   const {weather, forecast, loading, error, searchWeather, getMyLocationWeather } = useWeather();
   
 
@@ -28,7 +30,13 @@ function App() {
       </div> */}
       <div className={styles.inputContainer}>
         <input className={styles.input} type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Введите название города"/>
-        <button className={styles.btn} onClick={() => searchWeather(city)}>Показать погоду</button>
+        <button className={styles.btn} onClick={
+          async () => {
+
+          await searchWeather(city);
+
+          setHistoryUpdate(prev => prev + 1);
+        }}>Показать погоду</button>
       </div>
       
       <div className={styles.watherContainer}>
@@ -70,6 +78,8 @@ function App() {
             ))}
           </div>
         )}
+
+        <History refreshTrigger={historyUpdate} />
       </div>
       
       

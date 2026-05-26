@@ -33,6 +33,16 @@ export function useWeather() {
 
 			setForecast(forecastData);
 
+			await fetch('http://localhost:3001/history', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					city: cityName
+				})
+			});
+
 		} catch (err) {
 
 			setError(err.message);
@@ -61,6 +71,16 @@ export function useWeather() {
 			const forecastData = await getForecast(weatherData.city);
 
 			setForecast(forecastData);
+
+			 await fetch('http://localhost:3001/history', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					city: weatherData.city
+				})
+			});
 
 		} catch (err) {
 
