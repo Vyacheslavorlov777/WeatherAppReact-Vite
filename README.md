@@ -2,25 +2,25 @@
 
 A modern fullstack weather application built with React, Vite, Express, Prisma, and SQLite.
 
-A modern fullstack weather application built with React, Vite, Express, Prisma, and SQLite.
-
 The application allows users to search weather by city name, get weather using geolocation, view a weekly forecast, and store search history in a database.
 
 ---
 
 # Preview
 
-Place your preview image in:
-
-```bash
-public/preview.png
-```
-
 Then it will be displayed automatically in README:
 
 ![Weather App Preview](./public/preview.png)
 
 ---
+
+# Using
+### 1 We enter the desired city or choose from the suggested ones, we get weather data and the history of early queries by city.
+![Weather app use step 1](public/usingWithSearch.png)
+
+### 2 After clicking the "Clear history" button, we get an empty database and an empty list is displayed visually in the application.
+![Weather app use step 2](public/useCleaning.png)
+
 
 # Features
 
